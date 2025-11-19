@@ -1,17 +1,24 @@
 {
   "compilerOptions": {
-    "outDir": "build",
     "target": "ESNext",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "strict": true,
-    "allowJs": true,
-    "strictNullChecks": false,
-    "esModuleInterop": true,
+    "useDefineForClassFields": false,
     "experimentalDecorators": true,
-    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "outDir": "build",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": false
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": [
     "src"
