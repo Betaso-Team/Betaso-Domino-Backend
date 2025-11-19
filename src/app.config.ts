@@ -6,6 +6,43 @@ import { playground } from "@colyseus/playground";
  * Import your Room files
  */
 import { MyRoom } from "./rooms/MyRoom";
+import { matchMaker, RedisDriver, RedisPresence, ServerOptions } from "colyseus";
+
+let gameOptions: ServerOptions = {}
+
+if (process.env.NODE_APP_INSTANCE) {
+    const processNumber = Number(process.env.NODE_APP_INSTANCE || "0")
+    const port = (Number(process.env.PORT) || 2569) + processNumber
+    gameOptions = {
+      presence: new RedisPresence(process.env.REDIS_URI),
+      driver: new RedisDriver(process.env.REDIS_URI),
+      publicAddress: `${port}.${process.env.SERVER_NAME}`,
+      selectProcessIdToCreateRoom: async function (
+        roomName: string,
+        clientOptions: any
+      ) {
+        if (roomName === "lobby") {
+          const lobbies = await matchMaker.query({ name: "lobby" })
+          if (lobbies.length !== 0) {
+            throw "Attempt to create one lobby"
+          }
+        }
+        const stats = await matchMaker.stats.fetchAll()
+        stats.sort((p1, p2) =>
+          p1.roomCount !== p2.roomCount
+            ? p1.roomCount - p2.roomCount
+            : p1.ccu - p2.ccu
+        )
+        if (stats.length === 0) {
+          throw "No process available"
+        } else {
+          return stats[0]?.processId
+        }
+      }
+    }
+    gameOptions.presence?.setMaxListeners(100) // extend max listeners to avoid memory leak warning
+  }
+
 
 export default config({
 
