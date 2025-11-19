@@ -76,4 +76,38 @@ function checkLobby() {
   })
 }
 
+// ========================================
+// MANEJO DE ERRORES - SOLO LOGGEAR
+// ========================================
+
+process.on("uncaughtException", (error: Error) => {
+    logger.error("=".repeat(80));
+    logger.error("💥 UNCAUGHT EXCEPTION - ERROR NO CAPTURADO");
+    logger.error("=".repeat(80));
+    logger.error("Error:", error.message);
+    logger.error("Stack:", error.stack);
+    logger.error("=".repeat(80));
+    
+    // ⚠️ NO reiniciar el proceso
+    // Las partidas activas continúan
+    // Se recomienda monitorear estos logs y corregir los errores
+  });
+  
+  process.on("unhandledRejection", (reason: any, promise: Promise<any>) => {
+    logger.error("=".repeat(80));
+    logger.error("💥 UNHANDLED REJECTION - PROMESA RECHAZADA");
+    logger.error("=".repeat(80));
+    logger.error("Razón:", reason);
+    if (reason?.stack) {
+      logger.error("Stack:", reason.stack);
+    }
+    logger.error("=".repeat(80));
+    
+    // ⚠️ NO reiniciar el proceso
+    // Las partidas activas continúan
+  });
+  process.on("warning", (warning: Error) => {
+    logger.warn("⚠️  WARNING:", warning.name, "-", warning.message);
+  });
+
 main()
