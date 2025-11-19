@@ -46,6 +46,8 @@ if (process.env.NODE_APP_INSTANCE) {
 
 export default config({
 
+    options: gameOptions,
+
     initializeGameServer: (gameServer) => {
         /**
          * Define your room handlers:
