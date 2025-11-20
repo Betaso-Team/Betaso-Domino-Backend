@@ -7,7 +7,7 @@ import { Jwt } from '@/auth/auth'
 
 import { GameModeCount, LobbyRoomState } from './schema/lobby/lobby-room-state'
 
-export class LobbyRoom extends ColyseusLobbyRoom {
+export class CustomLobbyRoom extends ColyseusLobbyRoom {
   state = new LobbyRoomState()
   private cleanupCronJob: cron.ScheduledTask | null = null
 
