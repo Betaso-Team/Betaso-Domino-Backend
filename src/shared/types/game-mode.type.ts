@@ -1,0 +1,1 @@
+export type PlayersQuantity = 2 | 4

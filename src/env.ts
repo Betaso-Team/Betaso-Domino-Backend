@@ -9,6 +9,9 @@ const envSchema = z.object({
   SERVER_NAME: z.string().optional(),
 
   // Redis
+  REDIS_HOST: z.string().optional(),
+  REDIS_PORT: z.coerce.number().positive().default(6379),
+  REDIS_PASSWORD: z.string().optional(),
   REDIS_URI: z.url().optional(),
 
   // Graylog
