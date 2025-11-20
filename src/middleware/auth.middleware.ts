@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 
-import { Jwt } from '../auth/auth'
+import { Jwt } from '@/auth/auth'
+
 import { db } from '../database/db'
 
 export interface AuthenticatedRequest extends Request {

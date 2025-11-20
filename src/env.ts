@@ -7,6 +7,8 @@ const envSchema = z.object({
   PORT: z.coerce.number().positive().default(2569),
   NODE_APP_INSTANCE: z.coerce.number().nonnegative().optional(),
   SERVER_NAME: z.string().optional(),
+  POSTGRES_CONNECTION_STRING: z.string(),
+  MONGO_URI: z.string(),
 
   // Redis
   REDIS_HOST: z.string().optional(),
