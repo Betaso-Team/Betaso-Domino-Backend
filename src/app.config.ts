@@ -3,15 +3,13 @@ import type { ServerOptions } from 'colyseus'
 import { monitor } from '@colyseus/monitor'
 import { playground } from '@colyseus/playground'
 import config from '@colyseus/tools'
-import { matchMaker, RedisDriver, RedisPresence } from 'colyseus'
+import { LobbyRoom, matchMaker, RedisDriver, RedisPresence } from 'colyseus'
 
 /**
  * Import your Room files
  */
 import env from '@/env'
 import { logger } from '@/logger'
-
-import { MyRoom } from './rooms/MyRoom'
 
 // Adapter to bridge our Logger interface with Colyseus's expected logger interface
 const colyseusLoggerAdapter = {
@@ -62,7 +60,8 @@ export default config({
     /**
      * Define your room handlers:
      */
-    gameServer.define('my_room', MyRoom)
+
+    gameServer.define('lobby', LobbyRoom)
   },
   initializeExpress: (app) => {
     /**
