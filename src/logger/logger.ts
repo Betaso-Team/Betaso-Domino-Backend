@@ -23,7 +23,7 @@ export abstract class Logger {
     }
   }
 
-  warn(message: string, name: string, p0: string, meta?: LogMeta): void {
+  warn(message: string, meta?: LogMeta): void {
     if (meta) {
       this.pino.warn(meta, message)
     }

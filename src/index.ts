@@ -76,8 +76,8 @@ process.on('uncaughtException', (error: Error) => {
   logger.error('='.repeat(80))
   logger.error('💥 UNCAUGHT EXCEPTION - ERROR NO CAPTURADO')
   logger.error('='.repeat(80))
-  logger.error('Error:', error.message)
-  logger.error('Stack:', error.stack)
+  logger.error(`Error: ${error.message}`)
+  logger.error(`Stack: ${error.stack}`)
   logger.error('='.repeat(80))
 
   // ⚠️ NO reiniciar el proceso
@@ -99,7 +99,7 @@ process.on('unhandledRejection', (reason: any, _promise: Promise<any>) => {
   // Las partidas activas continúan
 })
 process.on('warning', (warning: Error) => {
-  logger.warn('⚠️  WARNING:', warning.name, '-', warning.message)
+  logger.warn(`⚠️  WARNING: ${warning.name} - ${warning.message}`)
 })
 
 main()
