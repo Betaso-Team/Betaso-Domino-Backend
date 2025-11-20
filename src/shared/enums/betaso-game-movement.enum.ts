@@ -1,3 +1,3 @@
 export enum BetasoGameMovementType {
-    TRUCO = 'truco',
-  }
+  DOMINO = 'domino',
+}

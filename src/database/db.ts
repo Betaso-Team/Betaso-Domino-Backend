@@ -7,7 +7,7 @@ import type { Currency } from '../shared/enums/currency.enum'
 import type { User } from '../shared/interfaces/user.interface'
 
 export enum GameMovementType {
-  TRUCO = 'truco',
+  DOMINO = 'domino',
 }
 
 export enum GameResultEnum {
