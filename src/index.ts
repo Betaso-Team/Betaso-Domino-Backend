@@ -1,4 +1,3 @@
-import { Encoder } from '@colyseus/schema'
 /**
  * IMPORTANT:
  * ---------
@@ -9,29 +8,32 @@ import { Encoder } from '@colyseus/schema'
  *
  * See: https://docs.colyseus.io/server/api/#constructor-options
  */
+import { Encoder } from '@colyseus/schema'
 import { listen } from '@colyseus/tools'
-import { logger, matchMaker } from 'colyseus'
+import { matchMaker } from 'colyseus'
 import { CronJob } from 'cron'
+
+import env from '@/env'
+import { logger } from '@/logger'
 
 import app from './app.config'
 
 Encoder.BUFFER_SIZE = 512 * 1024
 
 // Create and listen on 2567 (or PORT environment variable.)
-
 async function main() {
-  if (process.env.NODE_APP_INSTANCE) {
-    const processNumber = Number(process.env.NODE_APP_INSTANCE ?? '0')
-    const port = (Number(process.env.PORT) ?? 2569) + processNumber
+  if (env.NODE_APP_INSTANCE) {
+    const processNumber = env.NODE_APP_INSTANCE
+    const port = env.PORT + processNumber
     await listen(app)
-    if (port === 2569) {
+    if (port === env.PORT) {
       // only the first thread of the first instance will create the lobby and init cron jobs
       await matchMaker.createRoom('lobby', {})
       checkLobby()
     }
   }
   else {
-    await listen(app, process.env.PORT ? Number.parseInt(process.env.PORT) : 9000)
+    await listen(app, env.PORT)
     await matchMaker.createRoom('lobby', {})
   }
 }

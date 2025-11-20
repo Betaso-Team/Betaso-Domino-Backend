@@ -1,4 +1,4 @@
-const os = require('os');
+const os = require('node:os')
 
 /**
  * COLYSEUS CLOUD WARNING:
@@ -7,8 +7,8 @@ const os = require('os');
  */
 
 module.exports = {
-  apps : [{
-    name: "colyseus-app",
+  apps: [{
+    name: 'colyseus-app',
     script: 'build/index.js',
     time: true,
     watch: false,
@@ -16,8 +16,7 @@ module.exports = {
     exec_mode: 'fork',
     wait_ready: true,
     env_production: {
-      NODE_ENV: 'production'
-    }
+      NODE_ENV: 'production',
+    },
   }],
-};
-
+}
