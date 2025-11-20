@@ -7,7 +7,7 @@ RUN npm ci
 COPY . .
 ENV NODE_ENV=development
 EXPOSE 2569
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
 
 FROM development AS builder
 RUN npm run build
@@ -17,4 +17,4 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/build ./build
 ENV NODE_ENV=production
 EXPOSE 2569
-CMD ["node", "build/index.js"]
+CMD ["npm", "start"]
