@@ -65,18 +65,20 @@ export class LobbyRoom extends ColyseusLobbyRoom {
   }
 
   onUncaughtException(err: Error, methodName: string) {
-    console.error('='.repeat(80))
-    console.error(`❌ ERROR NO CAPTURADO EN LOBBY ROOM - Método: ${methodName}`)
-    console.error('='.repeat(80))
-    console.error('Error:', err)
-    console.error('Stack:', err.stack)
-    if (err.cause) {
-      console.error('Cause:', err.cause)
+    logger.error('='.repeat(80))
+    logger.error(`❌ ERROR NO CAPTURADO EN LOBBY ROOM - Método: ${methodName}`)
+    logger.error('='.repeat(80))
+    logger.error('Error:', err)
+    if ('stack' in err && err.stack) {
+      logger.error('Stack:', err.stack)
     }
-    if (err.message) {
-      console.error('Message:', err.message)
+    if ('cause' in err && err.cause) {
+      logger.error('Cause:', err.cause)
     }
-    console.error('='.repeat(80))
+    if ('message' in err && err.message) {
+      logger.error('Message:', err.message)
+    }
+    logger.error('='.repeat(80))
 
     // Importante: NO lanzar el error aquí, solo loguearlo
     // Si lanzamos el error, el servidor se caerá
