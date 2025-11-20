@@ -1,11 +1,11 @@
 import type { Client } from 'colyseus'
 
-import { LobbyRoom as ColyseusLobbyRoom, matchMaker } from 'colyseus'
+import { LobbyRoom as ColyseusLobbyRoom, logger, matchMaker } from 'colyseus'
 import * as cron from 'node-cron'
 
 import { Jwt } from '@/auth/auth'
 
-import { LobbyRoomState } from './schema/lobby/lobby-room-state'
+import { GameModeCount, LobbyRoomState } from './schema/lobby/lobby-room-state'
 
 export class LobbyRoom extends ColyseusLobbyRoom {
   state = new LobbyRoomState()
@@ -125,8 +125,6 @@ export class LobbyRoom extends ColyseusLobbyRoom {
         console.error('❌ Error en limpieza de salas:', error)
       }
     })
-
-    console.log('✅ Cron job de limpieza iniciado en LobbyRoom')
   }
 
   private async cleanupInactiveRooms() {
@@ -138,10 +136,6 @@ export class LobbyRoom extends ColyseusLobbyRoom {
 
       // Filtrar solo salas de juego (excluir lobby)
       const gameRooms = allRooms.filter(room => room.name !== 'lobby')
-
-      console.log(`🧹 Verificando ${gameRooms.length} salas de juego...`)
-
-      let closedCount = 0
 
       for (const room of gameRooms) {
         try {
@@ -172,36 +166,32 @@ export class LobbyRoom extends ColyseusLobbyRoom {
               const isNotMatching = status !== 'matching'
 
               if (isNotMatching) {
-                console.log(`🗑️ Cerrando sala inactiva: ${room.roomId}`)
-                console.log(`  - Name: ${room.name}`)
-                console.log(`  - Creada hace: ${Math.round(roomAge / 60000)} min`)
-                console.log(`  - Clientes: ${room.clients}`)
-                console.log(`  - Estado: ${status}`)
-                console.log(`  - State Size: ${inspectData.stateSize} bytes`)
+                logger.info(`🗑️ Cerrando sala inactiva: ${room.roomId}`)
+                logger.info(`  - Name: ${room.name}`)
+                logger.info(`  - Creada hace: ${Math.round(roomAge / 60000)} min`)
+                logger.info(`  - Clientes: ${room.clients}`)
+                logger.info(`  - Estado: ${status}`)
+                logger.info(`  - State Size: ${inspectData.stateSize} bytes`)
 
                 await matchMaker.remoteRoomCall(room.roomId, 'disconnect', [])
-                closedCount++
-                console.log(`✅ Sala cerrada exitosamente`)
               }
               else {
-                console.log(`⏭️ Sala ${room.roomId} preservada (estado: ${status})`)
+                logger.info(`⏭️ Sala ${room.roomId} preservada (estado: ${status})`)
               }
             }
             catch (inspectError) {
               // Si no se puede inspeccionar, probablemente ya está cerrada
-              console.log(`⚠️ No se pudo inspeccionar sala ${room.roomId}, posiblemente ya cerrada ${inspectError}`)
+              logger.warn(`⚠️ No se pudo inspeccionar sala ${room.roomId}, posiblemente ya cerrada ${inspectError}`)
             }
           }
         }
         catch (error) {
-          console.error(`❌ Error procesando sala ${room.roomId}:`, error)
+          logger.error(`❌ Error procesando sala ${room.roomId}:`, error)
         }
       }
-
-      console.log(`🎯 Limpieza completada: ${closedCount} salas cerradas de ${gameRooms.length} revisadas`)
     }
     catch (error) {
-      console.error('❌ Error en cleanupInactiveRooms:', error)
+      logger.error('❌ Error en cleanupInactiveRooms:', error)
     }
   }
 
