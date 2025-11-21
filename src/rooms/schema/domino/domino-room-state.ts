@@ -11,7 +11,6 @@ export class DominoRoomState extends Schema {
   @type('string') status:
     | 'matching'
     | 'enqueued'
-    | 'initial_cards_dealt'
     | 'started'
     | 'finished'
     | 'canceled' = 'matching'
