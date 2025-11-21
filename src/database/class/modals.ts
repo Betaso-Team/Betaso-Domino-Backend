@@ -1,5 +1,5 @@
 export class Modals {
-  uuid: string 
-  code: string 
-  text: string
+  uuid!: string
+  code!: string
+  text!: string
 }

@@ -11,6 +11,7 @@ import { matchMaker, RedisDriver, RedisPresence } from 'colyseus'
 import env from '@/env'
 import { logger } from '@/logger'
 
+import { gameModeRoutes } from './game-modes/routes'
 import { CustomLobbyRoom } from './rooms/lobby-room'
 
 // Adapter to bridge our Logger interface with Colyseus's expected logger interface
@@ -73,6 +74,8 @@ export default config({
     app.get('/hello_world', (req, res) => {
       res.send('It\'s time to kick ass and chew bubblegum!')
     })
+
+    app.use('/game-modes', gameModeRoutes)
 
     /**
      * Use @colyseus/playground

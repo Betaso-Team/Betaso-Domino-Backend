@@ -9,5 +9,9 @@ export type ResponseBody<T>
     status: 'error'
     message: string
   }
+  | {
+    status: 'success'
+    message: string
+  }
 
 export type Response<T> = ExpressResponse<ResponseBody<T>>
